@@ -1,12 +1,25 @@
 export let state;
 
 
-export function managePets(){
+export function managePets(state = {pets:[]},action){
+  switch(action.type){
+    case 'ADD_PET':
+      return {pets: [...state.pets,action.pet]}
+    case 'REMOVE_PET':
+      let pets = state.pets.filter((pet)=> pet.id !== action.id)
+      return {pets: pets}
+    default:
+      return state
+  }
 }
 
-export function dispatch(){
+export function dispatch(action){
+  state = managePets(state,action)
+  render()
 }
 
 export function render(){
-
+  let pets = state.pets.map((pet)=>`<li>${pet.name}</li>`)
+  let data = `<div id='container'><ul>${pets}</ul></div>`
+  document.body.innerHTML = data
 }
